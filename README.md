@@ -1,60 +1,49 @@
+<div align="center">
+
 # api-examples
 
-The same small REST workflow, implemented three times: **Python**, **Node**, and
-**POSIX shell**. Each client lists posts for a user, fetches one by id, handles a
-missing resource, and creates a record.
+**Working API calls in three languages — the same request, in curl, Python stdlib, and Node fetch.**
 
-All three run against [JSONPlaceholder](https://jsonplaceholder.typicode.com), a
-public demo API with no authentication — clone and run, no key required.
+[![deps](https://img.shields.io/badge/dependencies-none-lightgrey?style=flat-square)](#quick-start)
+[![license](https://img.shields.io/badge/license-MIT-green?style=flat-square)](LICENSE)
 
-## Why three languages
+</div>
 
-Most quickstarts pick one language and leave everyone else translating. These
-three cover the usual first questions: the ergonomic library case (`requests`),
-the zero-dependency runtime case (Node's built-in `fetch`), and the "just show me
-the HTTP" case (`curl`). Output is deliberately identical across all three, so you
-can diff behaviour rather than syntax.
+## About
 
-## Running them
+Documentation snippets rot because they are never run. Each directory
+here holds the same calls written three ways, and every one of them is a
+complete script — copy it out and it runs. Nothing imports a client library, so
+the example shows the actual wire format rather than what an SDK makes of it.
 
-**Python** (3.8+):
+## Quick start
 
-```sh
-pip install -r requirements.txt
-python python_client.py
+```bash
+git clone https://github.com/lxcadoza993/api-examples
+cd api-examples
+sh curl/create.sh     # or python3 python/create.py / node js/create.js
 ```
 
-**Node** (18+, for global `fetch` and `AbortSignal.timeout`):
+## Configuration
 
-```sh
-node node_client.mjs
-```
+| Key | Description |
+| --- | --- |
+| `curl/` | shell examples, no jq required |
+| `python/` | standard library only — `urllib`, no requests |
+| `js/` | Node 18+ built-in `fetch`, no npm install |
+## Roadmap
 
-**Shell** (`curl` required, `jq` optional — without it you get raw JSON):
+- [ ] Go and Rust variants
+- [ ] A script that asserts all three produce identical output
+- [ ] Error-handling examples per language
 
-```sh
-chmod +x curl_client.sh
-./curl_client.sh
-```
+## Contributing
 
-## What each one demonstrates
-
-| Behaviour | Why it is here |
-|---|---|
-| `GET /posts?userId=1` | Query parameters, encoded rather than concatenated |
-| `GET /posts/1` | Reading a single resource |
-| `GET /posts/9999` | A 404 treated as an expected result, not an exception |
-| `POST /posts` | JSON request body with the right `Content-Type` |
-
-Every client sets an explicit timeout and checks the status code before parsing —
-the two lines most examples skip and production needs most.
-
-## Adapting these
-
-Change `BASE_URL` to your own service. If it needs authentication, add the header
-where each client builds its request — the session in Python, the `request()`
-helper in Node, the `CURL` variable in the shell script. Do not commit the token.
+Issues and pull requests are welcome. Please keep changes small and focused,
+and add a test for any behaviour change — every repository here ships with a
+runnable test suite and no third-party dependencies, so CI is just
+`python3 -m unittest` / `bash test_*.sh`.
 
 ## License
 
-MIT — see [LICENSE](LICENSE).
+[MIT](LICENSE)
